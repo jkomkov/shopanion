@@ -2,40 +2,22 @@
 
 **AI-powered virtual try-on that works on any shopping site with personalized video generation**
 
-## 🚀 What We Built
+## 🚀 What It Is
 
-A **Chrome Extension** that transforms any product page into an interactive virtual try-on experience. Works universally across all e-commerce sites - no retailer integration needed.
+A **Universal Chrome Extension** that adds AI-powered virtual try-on to any shopping site. Instantly see how clothes fit, create short videos, and get personalized style recommendations—no retailer integration needed.
 
-![Extension Demo](./taylor_swift.webp)
-*Chrome extension automatically detects products and adds "Try it On" functionality to any shopping site*
+### Core Features
+- **🌐 Universal Try-On**: Works on any e-commerce site out of the box.
+- **🎯 Photorealistic Results**: Gemini AI preserves your body shape, pose, and background.
+- **🎬 Instant Video Creation**: Turn try-on images into short, shareable video clips.
+- **🧠 Smart Recommendations**: Learns your style and suggests new items you'll love.
 
-### Key Features
-- **🌐 Universal Chrome Extension**: One-click installation, works on any e-commerce site
-- **🎯 Photorealistic Try-On**: Advanced Gemini AI preserves body shape, pose, and background
-- **🎬 Video Generation**: Create 3-6 second vertical clips with actions like "turn" and "wave"
-- **🧠 Smart Memory**: Learns style preferences for personalized recommendations
-- **⚡ Zero Setup**: Install extension and start trying on clothes immediately
+## 🎯 How It Works
 
-## 🎯 The Experience
-
-### 1. Original Person Image
-![Person Image](./taylor_swift.webp)
-*Upload your photo once - the extension remembers your profile for instant try-ons*
-
-### 2. Product Detection
-![Product Image](./sample_product.webp)
-*Extension automatically detects clothing items on any e-commerce site*
-
-### 3. AI-Generated Try-On Result
-![Virtual Try-On Result](./vton_result_swift_banana.png)
-*AI generates photorealistic try-on images in ~2 seconds, preserving your body shape and background*
-
-**Complete Flow:**
-1. **Browse any product page** → Extension detects clothing items
-2. **Click "Try it On"** → AI generates realistic try-on preserving your appearance
-3. **Make a Video** → Choose animations to showcase the fit
-4. **Get Recommendations** → AI suggests similar items based on your history
-5. **Share & Save** → Download or share your personalized content
+| 1. Upload Your Photo | 2. Browse Any Store | 3. Get Your AI Try-On |
+| :---: |:---:|:---:|
+| ![Person Image](./taylor_swift.webp) | ![Product Image](./sample_product.webp) | ![Virtual Try-On Result](./vton_result_swift_banana.png) |
+| Your personal model for instant try-ons. | Our extension finds the product automatically. | See a photorealistic result in seconds. |
 
 ## 🏗️ Architecture
 
