@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopanion</title>
+  <link rel="stylesheet" href="/src/styles/extension-styles.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header class="popup-header">
+      <div class="header-content">
+        <div class="brand-info">
+          <h1>Shopanion</h1>
+          <p>AI Shopping Companion</p>
+        </div>
+        <div class="profile-section">
+          <img id="profile-avatar" class="profile-avatar" src="/assets/images/default_profile.webp" alt="Profile" title="Click to view profile">
+        </div>
+      </div>
+    </header>
+
+    <main class="popup-main">
+      <!-- Status Section -->
+      <section class="status-section">
+        <div id="page-status" class="status-card">
+          <div class="status-icon"></div>
+          <div class="status-text">
+            <h3>Page Status</h3>
+            <p id="page-status-text">Checking page...</p>
+          </div>
+          <button id="refresh-product-info" class="refresh-btn" title="Refresh product detection">↻</button>
+        </div>
+      </section>
+
+      <!-- Primary Actions -->
+      <section class="actions-section">
+        <div class="primary-actions">
+          <button id="try-on-current" class="action-btn primary" disabled>
+            Try it On
+          </button>
+          <button id="show-product-image" class="action-btn secondary" disabled>
+            View Product
+          </button>
+        </div>
+      </section>
+
+      <!-- Navigation -->
+      <section class="navigation-section">
+        <div class="nav-buttons">
+          <button id="open-history" class="nav-btn">
+            <span class="nav-icon">History</span>
+          </button>
+          <button id="open-profile" class="nav-btn">
+            <span class="nav-icon">Profile</span>
+          </button>
+          <button id="get-recommendations" class="nav-btn">
+            <span class="nav-icon">Discover</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="popup-footer">
+      <div class="service-status">
+        <div class="service-indicator">
+          <span class="status-dot" id="vton-status"></span>
+          <span>Try-On</span>
+        </div>
+        <div class="service-indicator">
+          <span class="status-dot" id="video-status"></span>
+          <span>Video</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Product Image Modal - Keep this one for quick preview -->
+  <div id="product-image-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Product Preview</h2>
+        <span class="close-modal" data-modal="product-image-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="product-image-preview">
+          <img id="detected-product-image" class="detected-product-image" src="" alt="Detected Product">
+          <div class="product-image-info">
+            <h4 id="product-title-display">Product Title</h4>
+            <p id="product-url-display">Product URL</p>
+            <div class="product-actions">
+              <button id="try-on-from-modal" class="action-btn primary">Try This On</button>
+              <button id="open-product-page" class="action-btn secondary">Open Page</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/src/scripts/extension-popup.js"></script>
+</body>
+</html>

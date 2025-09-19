@@ -1,0 +1,237 @@
+/* Virtual Try-On Extension Styles */
+
+#vton-extension-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  z-index: 10000;
+}
+
+.vton-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 8px 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vton-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.vton-btn.vton-secondary {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.vton-btn.vton-secondary:hover {
+  box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);
+}
+
+.vton-modal {
+  display: none;
+  position: fixed;
+  z-index: 10001;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+.vton-modal-content {
+  background-color: #ffffff;
+  margin: 5% auto;
+  padding: 0;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: vtonModalSlideIn 0.3s ease-out;
+}
+
+@keyframes vtonModalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.vton-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  padding: 20px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.vton-close:hover,
+.vton-close:focus {
+  color: #667eea;
+}
+
+#vton-modal-body {
+  padding: 0 30px 30px 30px;
+}
+
+#vton-modal-body h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.vton-step {
+  margin: 20px 0;
+}
+
+.vton-step p {
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+#vton-selfie-upload {
+  width: 100%;
+  padding: 12px;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+#vton-selfie-upload:hover {
+  border-color: #667eea;
+}
+
+#vton-loading,
+#vton-video-loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #667eea;
+}
+
+#vton-result,
+#vton-video-result {
+  text-align: center;
+  margin: 20px 0;
+}
+
+#vton-result-image,
+#vton-result-video {
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.vton-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+#vton-video-controls {
+  text-align: center;
+  margin: 20px 0;
+}
+
+#vton-video-controls p {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.vton-action-btn {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 8px;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.vton-action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4);
+}
+
+.vton-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 10002;
+  transform: translateX(400px);
+  transition: transform 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.vton-toast-show {
+  transform: translateX(0);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .vton-modal-content {
+    width: 95%;
+    margin: 10% auto;
+  }
+
+  #vton-modal-body {
+    padding: 0 20px 20px 20px;
+  }
+
+  .vton-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .vton-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .vton-action-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+/* Integration with existing page styles */
+#vton-try-on-btn {
+  margin-top: 16px !important;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+/* Ensure the extension doesn't interfere with page layout */
+#vton-extension-container * {
+  box-sizing: border-box;
+}

@@ -1,0 +1,3 @@
+# Requirements for video generation test script
+httpx>=0.25.2
+python-dotenv>=1.0.0

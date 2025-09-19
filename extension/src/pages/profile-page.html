@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopanion - Profile</title>
+  <link rel="stylesheet" href="/src/styles/extension-styles.css">
+  <style>
+    body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      background: #f8f9fa;
+    }
+    .page-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: white;
+      min-height: 100vh;
+    }
+    .page-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .back-button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div class="page-header">
+      <button class="back-button" onclick="window.close()">← Back</button>
+      <h1>Profile</h1>
+      <p>Manage your Shopanion profile and preferences</p>
+    </div>
+
+    <div class="profile-content">
+      <div class="profile-info">
+        <div class="profile-image-section">
+          <img id="profile-image-large" class="profile-image-large" src="/assets/images/default_profile.webp" alt="Profile Picture">
+          <button id="change-profile-image" class="action-btn secondary">Change Photo</button>
+          <input type="file" id="profile-image-upload" accept="image/*" style="display: none;">
+        </div>
+        <div class="profile-details">
+          <h3>Taylor Swift</h3>
+          <p>Default Profile</p>
+          <div class="profile-stats">
+            <div class="stat-item">
+              <span class="stat-number" id="total-tryons">0</span>
+              <span class="stat-label">Try-ons</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" id="total-videos">0</span>
+              <span class="stat-label">Videos</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" id="favorite-items">0</span>
+              <span class="stat-label">Favorites</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section" style="margin-top: 40px;">
+        <h3>API Configuration</h3>
+        <div class="setting-item">
+          <label class="setting-label-text">Gemini API Key</label>
+          <input type="password" id="gemini-api-key" placeholder="Enter your Gemini API key" style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
+          <small style="color: #666; margin-top: 5px; display: block;">Get your API key from <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a></small>
+          <button id="save-api-key" class="action-btn primary" style="margin-top: 10px;">Save API Key</button>
+        </div>
+      </div>
+
+      <div class="settings-section" style="margin-top: 40px;">
+        <h3>Settings</h3>
+        <div class="setting-item">
+          <label class="setting-label">
+            <input type="checkbox" id="auto-detect" checked>
+            <span class="checkmark"></span>
+            Auto-detect product pages
+          </label>
+        </div>
+        <div class="setting-item">
+          <label class="setting-label">
+            <input type="checkbox" id="show-notifications" checked>
+            <span class="checkmark"></span>
+            Show notifications
+          </label>
+        </div>
+        <div class="setting-item">
+          <label class="setting-label">
+            <input type="checkbox" id="cache-results" checked>
+            <span class="checkmark"></span>
+            Cache results for faster loading
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/src/scripts/profile-page.js"></script>
+</body>
+</html>
