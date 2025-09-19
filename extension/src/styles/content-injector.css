@@ -231,6 +231,136 @@
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
 }
 
+/* Try-On Result Modal Styles */
+.vton-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e9ecef;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 16px 16px 0 0;
+}
+
+.vton-modal-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+
+.vton-modal-body {
+  padding: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.vton-loading-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.vton-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #667eea;
+  border-radius: 50%;
+  animation: vtonSpin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes vtonSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.vton-loading-state p {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.vton-result-preview {
+  text-align: center;
+}
+
+.vton-result-image {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.vton-result-info h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.vton-result-info p {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 20px;
+  word-break: break-all;
+}
+
+.vton-result-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vton-error-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.vton-error-state p {
+  color: #dc3545;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Action button styles to match extension popup */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  text-decoration: none;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.action-btn.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.action-btn.secondary {
+  background: #f8f9fa;
+  color: #333;
+  border: 1px solid #e9ecef;
+}
+
+.action-btn.secondary:hover {
+  background: #e9ecef;
+}
+
 /* Ensure the extension doesn't interfere with page layout */
 #vton-extension-container * {
   box-sizing: border-box;

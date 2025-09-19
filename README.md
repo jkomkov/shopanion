@@ -8,8 +8,8 @@ A **Universal Chrome Extension** that adds AI-powered virtual try-on to any shop
 
 ### Core Features
 - **🌐 Universal Try-On**: Works on any e-commerce site out of the box.
-- **🎯 Photorealistic Results**: Gemini AI preserves your body shape, pose, and background.
-- **🎬 Instant Video Creation**: Turn try-on images into short, shareable video clips.
+- **🎯 Photorealistic Results**: AI preserves your body shape, pose, and background.
+- **⚡ Instant Popup Results**: See try-on results immediately in a clean popup interface.
 - **🧠 Smart Recommendations**: Learns your style and suggests new items you'll love.
 
 ## 🎯 How It Works
@@ -27,12 +27,12 @@ A **Universal Chrome Extension** that adds AI-powered virtual try-on to any shop
 - **🎬 MCP-B (Video)**: `mcp_video/` - FastAPI + MiniMax for video generation and animation
 - **⚡ Performance**: Sub-second responses with Redis caching, horizontal scaling
 
-## 🎬 Demo Flow (3 Minutes)
+## 🎬 Demo Flow (1 Minute)
 
-1. Open any retailer → Extension detects product → Click "Try it On" → See result in ~2s
-2. Click "Make a Video" → Choose "Turn" → Watch 4-6s animated clip
+1. Open any retailer → Extension detects product → Click "Try it On" → See result popup in ~2s
+2. Download your try-on image or try again with different settings
 3. View recommendations → AI suggests similar items based on your style
-4. **Impact**: "Two MCP services power try-on + video from any site with personalized memory"
+4. **Impact**: "Instant virtual try-on with popup results - no complex workflows needed"
 
 ## 🛠️ Quick Start
 

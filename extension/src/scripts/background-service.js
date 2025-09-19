@@ -44,7 +44,9 @@ class VTONBackground {
   }
 
   generateUserId() {
-    return 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+    const userId = 'user_' + Date.now();
+    console.log('Generated background user ID:', userId);
+    return userId;
   }
 
   async handleMessage(request, sender, sendResponse) {
@@ -73,6 +75,11 @@ class VTONBackground {
         case 'getUserData':
           const userData = await this.getUserData();
           sendResponse({ success: true, data: userData });
+          break;
+
+        case 'openProfile':
+          chrome.tabs.create({ url: chrome.runtime.getURL('src/pages/profile-page.html') });
+          sendResponse({ success: true });
           break;
 
         default:

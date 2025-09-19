@@ -9,7 +9,6 @@ class ProfilePage {
   async init() {
     await this.loadUserData();
     await this.loadProfileImage();
-    await this.loadApiKey();
     this.setupEventListeners();
     this.updateProfileStats();
     this.updateSettings();
@@ -48,11 +47,6 @@ class ProfilePage {
 
     document.getElementById('profile-image-upload').addEventListener('change', (e) => {
       this.handleProfileImageChange(e);
-    });
-
-    // API key save
-    document.getElementById('save-api-key').addEventListener('click', () => {
-      this.saveApiKey();
     });
 
     // Settings
@@ -109,33 +103,6 @@ class ProfilePage {
     document.getElementById('cache-results').checked = settings.cacheResults !== false;
   }
 
-  async loadApiKey() {
-    try {
-      const data = await chrome.storage.local.get(['geminiApiKey']);
-      if (data.geminiApiKey) {
-        document.getElementById('gemini-api-key').value = data.geminiApiKey;
-      }
-    } catch (error) {
-      console.error('Failed to load API key:', error);
-    }
-  }
-
-  async saveApiKey() {
-    const apiKey = document.getElementById('gemini-api-key').value.trim();
-
-    if (!apiKey) {
-      this.showToast('Please enter an API key');
-      return;
-    }
-
-    try {
-      await chrome.storage.local.set({ geminiApiKey: apiKey });
-      this.showToast('✅ API key saved successfully');
-    } catch (error) {
-      console.error('Failed to save API key:', error);
-      this.showToast('❌ Failed to save API key');
-    }
-  }
 
   async updateSetting(key, value) {
     try {

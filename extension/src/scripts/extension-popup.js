@@ -19,17 +19,27 @@ class VTONPopup {
   }
 
   async loadUserData() {
+    console.log('🔄 Loading user data...');
     try {
       const response = await chrome.runtime.sendMessage({
         action: 'getUserData'
       });
 
+      console.log('📥 getUserData response:', response);
+
       if (response.success) {
         this.userData = response.data;
-        this.updateSettings();
+        console.log('✅ User data loaded successfully:', this.userData);
       }
     } catch (error) {
-      console.error('Failed to load user data:', error);
+      console.error('❌ Failed to load user data:', error);
+      // Create default user data if loading fails
+      this.userData = {
+        userId: 'user_' + Date.now(),
+        settings: {},
+        history: []
+      };
+      console.log('🔧 Created fallback user data:', this.userData);
     }
   }
 
@@ -170,14 +180,6 @@ class VTONPopup {
       return;
     }
 
-    // Check if we have profile image
-    const profileData = await chrome.storage.local.get(['profileImage']);
-    if (!profileData.profileImage) {
-      this.showToast('Please set up your profile image first');
-      chrome.tabs.create({ url: chrome.runtime.getURL('src/pages/profile-page.html') });
-      return;
-    }
-
     // Get product info
     if (!this.currentProductInfo) {
       this.showToast('Loading product information...');
@@ -189,131 +191,63 @@ class VTONPopup {
       return;
     }
 
-    this.showToast('Generating try-on image...');
+    this.showToast('Starting try-on process...');
 
     try {
-      const result = await this.callGeminiTryOn(profileData.profileImage, this.currentProductInfo.image);
+      // Send message to content script to trigger try-on
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-      if (result.success) {
-        // Save the result and show it
-        const timestamp = Date.now();
-        const tryOnResult = {
-          id: `tryon_${timestamp}`,
-          personImage: profileData.profileImage,
-          garmentImage: this.currentProductInfo.image,
-          resultImage: result.imageData,
-          productTitle: this.currentProductInfo.title,
-          productUrl: this.currentProductInfo.url,
-          timestamp: timestamp
-        };
+      console.log('📤 Sending triggerTryOn message to tab:', tab.id);
+      console.log('📋 Current tab URL:', tab.url);
 
-        // Save to history
-        const history = await chrome.storage.local.get(['tryOnHistory']);
-        const updatedHistory = [tryOnResult, ...(history.tryOnHistory || [])].slice(0, 50);
-        await chrome.storage.local.set({ tryOnHistory: updatedHistory });
+      // First, test if content script is responding
+      let pingResponse;
+      try {
+        pingResponse = await chrome.tabs.sendMessage(tab.id, { action: 'ping' });
+        console.log('🏓 Ping response:', pingResponse);
+      } catch (pingError) {
+        console.log('❌ Ping failed:', pingError.message);
+      }
 
-        // Show result in new tab
-        const resultUrl = chrome.runtime.getURL('src/pages/history-page.html') + `?show=${tryOnResult.id}`;
-        chrome.tabs.create({ url: resultUrl });
+      const response = await chrome.tabs.sendMessage(tab.id, {
+        action: 'triggerTryOn'
+      });
 
-        this.showToast('✅ Try-on complete! Check the new tab.');
+      console.log('📥 Response from content script:', response);
+
+      if (response && response.success) {
+        this.showToast('✅ Try-on started! Check the page for results.');
+        console.log('✅ Try-on message sent successfully:', response.message);
+        // Close popup to let user see the result
+        window.close();
+      } else if (response === undefined) {
+        console.log('❌ Content script not responding - may not be injected');
+        this.showToast('❌ Extension not ready. Please refresh the page and try again.');
       } else {
-        this.showToast('❌ Try-on failed: ' + (result.error || 'Unknown error'));
+        console.log('❌ Try-on failed:', response);
+        this.showToast('❌ Could not start try-on process: ' + (response?.error || 'Unknown error'));
       }
     } catch (error) {
-      console.error('Try-on failed:', error);
-      this.showToast('❌ Try-on failed: ' + error.message);
+      console.error('❌ Try-on trigger failed:', error);
+
+      // Check if content script is not injected
+      if (error.message.includes('Could not establish connection')) {
+        this.showToast('❌ Extension not ready. Please refresh the page and try again.');
+      } else {
+        this.showToast('❌ Try-on failed: ' + error.message);
+      }
     }
   }
 
   async callGeminiTryOn(personImageData, garmentImageUrl) {
-    // Get API key from storage
-    const settings = await chrome.storage.local.get(['geminiApiKey']);
-    const GEMINI_API_KEY = settings.geminiApiKey;
-
-    if (!GEMINI_API_KEY) {
-      throw new Error('Gemini API key not configured. Please set it in your profile settings.');
-    }
-    const GEMINI_MODEL = 'gemini-2.0-flash-exp';
-    const PROMPT = `You are an advanced virtual try-on assistant. Using the first image as the person (preserve their exact identity, facial features, hair, pose, lighting conditions, and background environment) and the second image as the garment, compose a highly realistic, photorealistic image of the person wearing the garment.
-
-Key requirements:
-- Preserve the person's exact body shape, proportions, and posture
-- Maintain original lighting conditions and shadows
-- Keep the background completely unchanged
-- Ensure the garment fits naturally with realistic fabric physics, wrinkles, and draping
-- Respect garment texture, color, patterns, and material properties
-- Adapt garment size and fit to the person's body naturally
-- Maintain depth and perspective consistency
-- Preserve any accessories or items the person is holding/wearing that don't conflict with the new garment
-- Ensure seamless integration between person and garment with no visible artifacts or blending issues
-
-Return only the final composed image with professional photo quality.`;
-
     try {
-      // Convert person image data URL to base64
-      const personBase64 = personImageData.split(',')[1];
-      const personMimeType = personImageData.split(';')[0].split(':')[1];
+      // Create client (API key will be loaded automatically)
+      const gemini = new VTONGemini();
 
-      // Fetch and convert garment image to base64
-      const garmentResponse = await fetch(garmentImageUrl);
-      const garmentBlob = await garmentResponse.blob();
-      const garmentBase64 = await this.blobToBase64(garmentBlob);
-      const garmentMimeType = garmentBlob.type;
-
-      const requestBody = {
-        contents: [
-          {
-            parts: [
-              {
-                inline_data: {
-                  mime_type: personMimeType,
-                  data: personBase64
-                }
-              },
-              {
-                inline_data: {
-                  mime_type: garmentMimeType,
-                  data: garmentBase64.split(',')[1]
-                }
-              },
-              {
-                text: PROMPT
-              }
-            ]
-          }
-        ]
-      };
-
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody)
-      });
-
-      if (!response.ok) {
-        throw new Error(`Gemini API error: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-        throw new Error('No content returned from Gemini');
-      }
-
-      const parts = data.candidates[0].content.parts;
-      for (const part of parts) {
-        if (part.inline_data && part.inline_data.data) {
-          const imageData = `data:${part.inline_data.mime_type};base64,${part.inline_data.data}`;
-          return { success: true, imageData };
-        }
-      }
-
-      throw new Error('No image data found in response');
+      // Call simplified try-on method
+      return await gemini.tryOn(personImageData, garmentImageUrl);
     } catch (error) {
-      console.error('Gemini API call failed:', error);
+      console.error('Try-on failed:', error);
       return { success: false, error: error.message };
     }
   }
@@ -375,32 +309,16 @@ Return only the final composed image with professional photo quality.`;
   }
 
   async checkServiceStatus() {
+    // Check if Gemini API key is configured
+    const settings = await chrome.storage.local.get(['geminiApiKey']);
     const vtonStatus = document.getElementById('vton-status');
     const videoStatus = document.getElementById('video-status');
 
-    vtonStatus.className = 'status-dot checking';
-    videoStatus.className = 'status-dot checking';
-
-    // Check VTON service
-    try {
-      const vtonResponse = await fetch('http://localhost:8001/health', {
-        method: 'GET',
-        timeout: 3000
-      });
-      vtonStatus.className = vtonResponse.ok ? 'status-dot online' : 'status-dot';
-    } catch (error) {
-      vtonStatus.className = 'status-dot';
+    if (vtonStatus) {
+      vtonStatus.className = settings.geminiApiKey ? 'status-dot online' : 'status-dot';
     }
-
-    // Check Video service
-    try {
-      const videoResponse = await fetch('http://localhost:8002/health', {
-        method: 'GET',
-        timeout: 3000
-      });
-      videoStatus.className = videoResponse.ok ? 'status-dot online' : 'status-dot';
-    } catch (error) {
-      videoStatus.className = 'status-dot';
+    if (videoStatus) {
+      videoStatus.className = 'status-dot'; // Video not implemented with Gemini yet
     }
   }
 

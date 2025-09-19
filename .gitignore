@@ -122,6 +122,7 @@ uv.lock
 # Chrome extension build artifacts
 extension/build/
 extension/dist/
+extension/config.js
 
 # Test files
 .pytest_cache/

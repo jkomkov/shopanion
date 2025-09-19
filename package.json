@@ -1,0 +1,20 @@
+{
+  "name": "vton-standalone",
+  "version": "1.0.0",
+  "description": "Standalone Virtual Try-On script using Gemini API",
+  "main": "standalone_vton.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node standalone_vton.js",
+    "try-all": "node standalone_vton.js --all"
+  },
+  "dependencies": {
+    "@google/genai": "^0.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["virtual-try-on", "gemini", "ai", "fashion"],
+  "author": "",
+  "license": "MIT"
+}

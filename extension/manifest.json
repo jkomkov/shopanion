@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Shopanion",
   "version": "1.0.0",
-  "description": "AI-powered virtual try-on companion for any shopping site",
+  "description": "AI Shopping Companion v0.2 - Virtual try-on for any shopping site",
 
   "permissions": [
     "activeTab",
@@ -24,7 +24,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["src/scripts/content-injector.js"],
+      "js": ["src/scripts/env-loader.js", "src/scripts/vton_gemini.js", "config.js", "src/scripts/content-injector.js"],
       "css": ["src/styles/content-injector.css"],
       "run_at": "document_end"
     }
@@ -50,7 +50,8 @@
         "src/*",
         "src/pages/*",
         "src/scripts/*",
-        "src/styles/*"
+        "src/styles/*",
+        "../.env"
       ],
       "matches": ["<all_urls>"]
     }
