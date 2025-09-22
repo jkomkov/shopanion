@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Shopanion",
+  "name": "Gravity",
   "version": "1.0.0",
   "description": "AI Shopping Companion v0.2 - Virtual try-on for any shopping site",
 
@@ -26,13 +26,13 @@
       "matches": ["<all_urls>"],
       "js": ["src/scripts/env-loader.js", "src/scripts/vton_gemini.js", "config.js", "src/scripts/content-injector.js"],
       "css": ["src/styles/content-injector.css"],
-      "run_at": "document_end"
+      "run_at": "document_idle"
     }
   ],
 
   "action": {
     "default_popup": "src/pages/extension-popup.html",
-    "default_title": "Shopanion - AI Try-On"
+    "default_title": "Gravity - AI Try-On"
   },
 
   "icons": {
