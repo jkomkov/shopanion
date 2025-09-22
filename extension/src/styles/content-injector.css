@@ -1,4 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@700&display=swap');
+
 /* Virtual Try-On Extension Styles */
+/* Force load Meie Script font for consistent rendering */
+@font-face {
+  font-family: 'Meie Script';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/meiescript/v8/U-4-pIplzhIa-fI33g_wY_5J.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 #vton-extension-container {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -364,4 +374,1081 @@
 /* Ensure the extension doesn't interfere with page layout */
 #vton-extension-container * {
   box-sizing: border-box;
+}
+
+/* ===================== */
+/* Gravity Hover Widget  */
+/* ===================== */
+
+#gravity-hover-root {
+  /* Positioning is now handled dynamically by the script */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: none;
+  transition: transform 0.3s ease-in-out;
+}
+
+.gravity-fab {
+  /* Slightly larger for more presence, but still refined */
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Make the container transparent, removing the CSS circle */
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  cursor: pointer;
+  transition: transform 180ms ease;
+  pointer-events: auto; /* allow interactions */
+}
+
+.gravity-fab:hover {
+  /* Enlarge the logo slightly on hover for a nice effect */
+  transform: scale(1.05);
+  box-shadow: none;
+}
+
+.gravity-fab-icon {
+  /* Make the logo the full size of the button area */
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensure the image scales correctly */
+  /* Add a subtle shadow to the logo itself so it pops off the page */
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+  transition: filter 0.2s ease-in-out;
+}
+
+.gravity-fab:hover .gravity-fab-icon {
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.25));
+}
+
+/* ============================ */
+/* Gravity Atelier Panel (v2)   */
+/* ============================ */
+
+.gravity-panel {
+  width: 380px; /* Wider for a more luxurious feel */
+  height: 620px; /* Taller to accommodate the dual-zone layout */
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 24px; /* Softer, more premium rounding */
+  padding: 16px;
+  /* Refined "liquid glass" material */
+  background: rgba(245, 245, 240, 0.6); /* Soft, creamy off-white */
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12), inset 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(50px) saturate(1.2);
+  -webkit-backdrop-filter: blur(50px) saturate(1.2);
+  transform: translateY(20px) scale(0.98); /* Start position for animation */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease, transform 350ms cubic-bezier(0.2, 1, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+#gravity-hover-root.open .gravity-panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* --- Atelier Header (Museum Quality) --- */
+
+.gravity-header {
+  flex-shrink: 0;
+  padding: 12px 16px; /* Fine-tuned padding for balance */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space out icons and title */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.6);
+  /* Add a subtle fade-in animation */
+  opacity: 0;
+  animation: fadeIn 0.5s 0.2s cubic-bezier(0.2, 1, 0.2, 1) forwards;
+}
+
+.gravity-header-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.gravity-header-icon:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.gravity-header-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.gravity-co-branded-title {
+  display: flex;
+  align-items: baseline; /* Perfect vertical alignment for the text */
+  gap: 8px;
+}
+
+.site-logo {
+  height: 16px; /* Fine-tuned for perfect balance */
+  filter: brightness(0.1);
+}
+
+.connector-text {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.5);
+  transform: translateY(-1px); /* Optical adjustment */
+}
+
+.gravity-brand-text {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #123524; /* Pthalo Green */
+}
+
+
+/* --- Zones --- */
+
+.gravity-inspiration-zone {
+  flex: 1; /* This will hold product cards later */
+  min-height: 200px; /* Ensure space is reserved */
+  overflow: hidden; /* Hide overflow during animations */
+  display: flex; /* Use flexbox for centering loader/error text */
+  align-items: center;
+  justify-content: center;
+}
+
+.gravity-interaction-zone {
+  flex-shrink: 0;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 18px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+/* --- Celeste Intro --- */
+
+.gravity-celeste-intro {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.celeste-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #1a1a1a;
+  margin: 0 0 4px 0;
+}
+
+.celeste-prompt {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.55);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* --- Smart Chips --- */
+
+.gravity-smart-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.chip {
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.5);
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  /* Staggered animation entrance */
+  animation: fadeIn 0.5s cubic-bezier(0.2, 1, 0.2, 1) forwards;
+}
+
+.chip:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Stagger the chip animations */
+#gravity-hover-root.open .chip:nth-child(1) { animation-delay: 0.2s; }
+#gravity-hover-root.open .chip:nth-child(2) { animation-delay: 0.3s; }
+#gravity-hover-root.open .chip:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* --- Text Input --- */
+
+.gravity-text-input-wrapper {
+  display: flex;
+  align-items: center;
+  margin: auto 16px 16px; /* Push to bottom and add side margin */
+  padding: 4px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 99px; /* Pill shape */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.2s ease; /* Add transition for focus state */
+}
+
+.gravity-text-input-wrapper:focus-within {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(18, 53, 36, 0.3); /* Add focus ring */
+}
+
+
+.gravity-text-input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px; /* Refined font size */
+  color: #1a1a1a;
+  padding: 8px 4px;
+  height: auto; /* Let it grow naturally */
+}
+
+.gravity-text-input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+  font-style: italic;
+  font-weight: 400; /* Lighter placeholder */
+}
+
+/* Base styles for both attach and send buttons */
+.gravity-attach-btn,
+.gravity-send-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.gravity-attach-btn {
+  margin-right: 8px;
+  color: rgba(0, 0, 0, 0.5);
+}
+.gravity-attach-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.7);
+}
+.gravity-attach-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.gravity-send-btn {
+  margin-left: 8px;
+  background-color: #123524; /* Pthalo Green from brand palette */
+  color: white;
+  opacity: 0; /* Hidden by default */
+  transform: scale(0.8);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.gravity-send-btn svg {
+  width: 18px;
+  height: 18px;
+}
+.gravity-send-btn:hover {
+  transform: scale(1.1); /* Match previous hover effect */
+}
+
+/* Show send button only when there's text */
+.gravity-text-input:not(:placeholder-shown) + .gravity-send-btn {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* Hide attach button when send is visible for a cleaner look */
+.gravity-text-input:not(:placeholder-shown) ~ .gravity-attach-btn {
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  width: 0;
+  margin-right: 0;
+}
+
+/* --- Chat Bubbles --- */
+.message-bubble {
+  padding: 12px 18px;
+  border-radius: 20px;
+  max-width: 80%;
+  line-height: 1.5;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  animation: fadeInFromBottom 0.5s ease forwards;
+  opacity: 0;
+}
+
+.message-bubble.user {
+  background-color: #123524;
+  color: white;
+  border-radius: 20px 20px 4px 20px;
+  margin-left: auto;
+  text-align: right;
+}
+
+.message-bubble.agent {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 20px 20px 20px 4px;
+  margin-right: auto;
+  text-align: left;
+}
+
+
+/* --- Panel Header --- */
+
+.gravity-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.gravity-brand {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: #1f2440;
+}
+
+.gravity-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1;
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(31,36,64,0.08);
+}
+.gravity-status .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+.gravity-status.ok .dot { background: #10b981; }
+.gravity-status.warn .dot { background: #f59e0b; }
+.gravity-status .label { color: #1f2937; }
+
+.gravity-panel-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.gravity-primary,
+.gravity-secondary,
+.gravity-tertiary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 0;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 160ms ease, box-shadow 200ms ease, background 200ms ease;
+}
+
+.gravity-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  box-shadow: 0 10px 26px rgba(102,126,234,0.35);
+}
+.gravity-primary:hover { transform: translateY(-1px); }
+
+.gravity-secondary {
+  background: rgba(255,255,255,0.85);
+  color: #1f2440;
+  border: 1px solid rgba(31,36,64,0.08);
+}
+.gravity-tertiary {
+  background: rgba(255,255,255,0.65);
+  color: #1f2440;
+  border: 1px solid rgba(31,36,64,0.08);
+}
+
+@media (max-width: 640px) {
+  #gravity-hover-root { right: 14px; bottom: 16px; }
+  .gravity-panel { width: 88vw; }
+}
+
+/* --- Product Grid & Cards --- */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto; /* Allow scrolling if content overflows */
+  padding: 8px; /* More breathing room for shadows */
+  /* Hide scrollbar for a cleaner look */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.product-grid::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
+
+.product-card {
+  background: transparent;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Finer, darker, more subtle border */
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  opacity: 0;
+  transform: translateY(15px);
+  animation: fadeIn 0.5s cubic-bezier(0.2, 1, 0.2, 1) forwards;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Ensure no default shadow */
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08); /* Soft shadow appears on hover */
+}
+
+.product-card-like-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: popIn 0.3s 0.5s cubic-bezier(0.2, 1, 0.2, 1) forwards;
+}
+
+.product-card:hover .product-card-like-btn {
+  opacity: 1;
+}
+
+.product-card-like-btn:hover {
+  transform: scale(1.1);
+}
+
+.product-card-like-btn svg {
+  width: 16px;
+  height: 16px;
+  color: #1a1a1a;
+  stroke: #1a1a1a;
+  stroke-width: 1.5;
+  fill: transparent;
+  transition: fill 0.2s ease, color 0.2s ease;
+}
+
+.product-card-like-btn.liked svg {
+  fill: #123524; /* Pthalo Green */
+  color: #123524;
+  stroke: #123524;
+}
+
+@keyframes popIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.product-card:hover .product-card-image {
+  transform: scale(1.03); /* Subtle image zoom on hover */
+}
+
+.product-card-image-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1.25; /* Elegant, taller aspect ratio */
+  background-color: rgba(240, 234, 214, 0.1); /* Faint eggshell placeholder */
+  border-radius: 18px;
+  overflow: hidden; /* Clip the image to the rounded corners */
+}
+
+.product-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease; /* Smooth zoom animation */
+}
+
+.product-card-info {
+  padding: 12px;
+  background: rgba(245, 245, 240, 0.6); /* Match panel background for seamless look */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(0, 0, 0, 0.1); /* Match card border */
+  text-align: right; /* Align price to the right */
+}
+
+.product-card-price {
+  font-size: 13px; /* Slightly larger for clarity */
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.8);
+  margin: 0;
+  display: inline-flex; /* Use inline-flex for right alignment */
+  gap: 6px;
+  align-items: baseline;
+}
+
+.product-card-price .sale {
+  color: #B94522; /* A more muted, sophisticated sale color */
+  font-weight: 600;
+}
+
+.product-card-price .original {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+/* --- Loader & Error States --- */
+.gravity-loader {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #1a1a1a;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.gravity-error-text {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.4);
+  text-align: center;
+  padding: 20px;
+}
+
+/* Gravity Hover Widget (Now the "Subtle Invitation") */
+/* ================================================= */
+
+#gravity-invitation-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+}
+
+.gravity-invitation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+}
+
+.invitation-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background-color: #123524;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: width 0.4s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+.invitation-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.invitation-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  background-color: #f0ead6;
+  padding: 10px 16px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Morphing animation states */
+.gravity-invitation.morphed .invitation-icon-wrapper {
+  width: 100%; /* Expand to contain the text */
+  padding: 6px 12px 6px 6px;
+  justify-content: flex-start;
+  border-radius: 24px;
+}
+
+.gravity-invitation.morphed .invitation-text {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* --- Atelier Console --- */
+/* ======================= */
+
+/* --- Desktop-First Base Styles --- */
+#gravity-console-root {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2147483647;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  --console-width: 420px;
+  --console-height: 75vh;
+  --locket-size: 64px;
+}
+
+/* 1. The Atelier Tab (Desktop's "Locket") */
+.locket-wrapper {
+  transition: all 0.5s cubic-bezier(0.6, 0, 0.2, 1);
+}
+.gravity-locket {
+  width: auto;
+  height: 48px; /* Increased from 44px */
+  border-radius: 18px 18px 0 0; /* Proportional radius */
+  padding: 0 28px; /* Increased padding */
+  background-color: #fdfdfd;
+  border: 1px solid #e5e5e5;
+  border-bottom: none;
+  box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.07), 0 0px 0 0 #fdfdfd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(0);
+  transition: transform 0.3s cubic-bezier(0.6, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.6, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+.gravity-locket:hover {
+  transform: translateY(-5px);
+  /* The second shadow now has a 6px height to match the new lift */
+  box-shadow: 0 -6px 30px rgba(0, 0, 0, 0.1), 0 6px 0 0 #fdfdfd;
+}
+.gravity-locket:active {
+  transform: translateY(-2px);
+  transition: transform 0.1s ease;
+}
+.gravity-locket-icon {
+  width: 32px; /* Increased from 28px */
+  height: 32px; /* Increased from 28px */
+  object-fit: contain;
+  transition: transform 0.3s cubic-bezier(0.6, 0, 0.2, 1);
+}
+.gravity-locket:hover .gravity-locket-icon {
+  transform: scale(1.08); /* Icon blooms slightly */
+}
+.atelier-tab-text {
+  display: none;
+}
+
+/* The Sheen Effect */
+.gravity-locket::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  transform: skewX(-25deg);
+}
+.gravity-locket:hover::after {
+  animation: sheen 1.2s ease-in-out;
+}
+@keyframes sheen {
+  to {
+    left: 150%;
+  }
+}
+
+
+/* 2. The Studio Console (Desktop Panel) */
+.gravity-console-panel {
+  position: absolute;
+  bottom: 0;
+  width: var(--console-width);
+  height: var(--console-height);
+  max-height: 850px;
+  border-radius: 28px 28px 0 0; /* Sharp bottom corners */
+  background-color: rgba(248, 248, 246, 0.75);
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  /* Animation */
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all 0.5s cubic-bezier(0.6, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+
+/* --- States --- */
+#gravity-console-root.expanded .gravity-console-panel {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#gravity-console-root.expanded .locket-wrapper {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+/* The wrapper for the tab/locket */
+
+
+/* Scrolled state does not apply to the new tab */
+#gravity-console-root .gravity-locket.scrolled {
+  background-color: #fdfdfd;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-color: #e5e5e5;
+  box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.07);
+}
+#gravity-console-root .gravity-locket.scrolled .gravity-locket-icon {
+  opacity: 1.0;
+}
+
+
+/* --- Desktop-First Enhancements --- */
+@media (min-width: 1200px) {
+  #gravity-console-root {
+    --console-width: 500px;
+    --console-height: 80vh;
+  }
+}
+
+
+/* --- Mobile View & Responsiveness (Overrides) --- */
+@media (max-width: 480px) {
+  #gravity-console-root {
+    /* On mobile, root is just a positioner, not a modal backdrop */
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  /* Revert to the circular Locket on mobile */
+  .gravity-locket {
+    width: var(--locket-size);
+    height: var(--locket-size);
+    border-radius: 50%;
+    background-color: #123524;
+    border: 1.5px solid rgba(240, 234, 214, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 0;
+  }
+  .gravity-locket-icon {
+    width: 75%;
+    height: 75%;
+  }
+  .atelier-tab-text {
+    display: none; /* Hide text on mobile locket */
+  }
+
+  /* Scrolled state for the mobile locket */
+  #gravity-console-root .gravity-locket.scrolled {
+    background-color: rgba(245, 245, 240, 0.5); /* Glassy Eggshell */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  #gravity-console-root .gravity-locket.scrolled .gravity-locket-icon {
+    opacity: 0.7;
+  }
+
+  /* The Mobile "Sheet" */
+  .gravity-console-panel {
+    position: fixed; /* Fixed to viewport */
+    width: 100vw;
+    height: 85vh;
+    bottom: 0;
+    left: 0;
+    border-radius: 24px 24px 0 0;
+    transform: translateY(100%);
+  }
+
+  #gravity-console-root.expanded .gravity-console-panel {
+    transform: translateY(0);
+  }
+
+  .locket-wrapper {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  #gravity-console-root.expanded .locket-wrapper {
+    transform: translateX(-50%) translateY(120px);
+  }
+}
+
+
+/* --- Atelier Console: Internal Layout --- */
+.gravity-console-panel .gravity-header {
+  flex-shrink: 0;
+}
+
+/* The new "Rolling Feed" */
+.gravity-console-feed {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 8px 24px 24px 24px;
+}
+
+/* Hide scrollbar for a cleaner look */
+.gravity-console-feed::-webkit-scrollbar {
+  display: none;
+}
+
+/* A generic "chat bubble" or "card" in the feed */
+.feed-item {
+  margin-bottom: 20px;
+  animation: fadeInFromBottom 0.5s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Styling for the inspiration carousel */
+.inspiration-carousel {
+  /* animation-delay helps with staggered loading feel */
+  animation-delay: 0.2s;
+}
+
+.inspiration-carousel-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 8px 0; /* Space for hover effects */
+  /* Hide horizontal scrollbar */
+  scrollbar-width: none; /* Firefox */
+}
+
+.inspiration-carousel-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Each item in the carousel */
+.carousel-product-card {
+  width: 140px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.carousel-product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-product-card .product-card-image-wrapper {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+}
+/* ============================ */
+/* Gravity Passport Panel (NEW) */
+/* ============================ */
+
+.gravity-passport-panel {
+  position: fixed; /* Fixed to viewport, not relative to console */
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 100vh; /* Full viewport height */
+  background-color: #FFFFFF;
+  border-radius: 0; /* No rounded corners for full-screen sidebar */
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  padding: 48px 0;
+  transform: translateX(-100%); /* Slide in from the left */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 2147483646; /* Just below the main console root */
+}
+
+/* Only show passport panel when BOTH console is expanded AND passport is open */
+#gravity-console-root.expanded.passport-open .gravity-console-panel {
+  /* Add subtle overlay effect to main panel */
+  filter: brightness(0.95);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Show passport panel when it has the 'visible' class */
+.gravity-passport-panel.visible {
+  transform: translateX(0) !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.passport-header {
+  padding: 0 32px;
+  margin-bottom: 28px;
+}
+
+.passport-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.passport-version {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.25);
+  letter-spacing: 0.8px;
+}
+
+.passport-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.passport-item {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 32px;
+  text-decoration: none;
+  color: #1a1a1a;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.passport-item:hover {
+  background-color: #f5f5f5;
+  color: #C8B58A; /* Champagne-gold for hover */
+}
+
+.passport-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.passport-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.passport-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.passport-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1), transparent);
+  margin: 16px 32px;
+}
+
+.passport-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.passport-item.utility .passport-text {
+  font-weight: 400; /* Lighter weight for utility items */
 }
